@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.hamcrest.core.IsNull;
 
 import java.io.File;
 
@@ -38,7 +41,6 @@ public class VideoPlayer extends JFrame {
 	public VideoPlayer() {
 		// Creación de datos asociados a la ventana (lista de reproducción)
 		listaRepVideos = new ListaDeReproduccion();
-		
 		// Creación de componentes/contenedores de swing
 		lCanciones = new JList<String>( listaRepVideos );
 		pbVideo = new JProgressBar( 0, 10000 );
@@ -83,8 +85,14 @@ public class VideoPlayer extends JFrame {
 				if (fPath==null) return;
 				path = fPath.getAbsolutePath();
 				// TODO: pedir ficheros por ventana de entrada (JOptionPane)
+				Object ficheros = JOptionPane.showInputDialog(
+						null, 
+						"Escriba el nombre de los ficheros",
+						"Entrada",
+						JOptionPane.QUESTION_MESSAGE,null,null, "*Pentatonix*.mp4");
+				
 				// ficheros = ...
-				listaRepVideos.add( path, ficheros );
+				listaRepVideos.add( path, ficheros+"" );
 				lCanciones.repaint();
 			}
 		});
@@ -92,7 +100,9 @@ public class VideoPlayer extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paraVideo();
-				listaRepVideos.irAAnterior();
+				if(cbAleatorio.isSelected()) {
+					listaRepVideos.irARandom();
+				}else {listaRepVideos.irAAnterior();}
 				lanzaVideo();
 			}
 		});
@@ -100,7 +110,9 @@ public class VideoPlayer extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paraVideo();
-				listaRepVideos.irASiguiente();
+				if(cbAleatorio.isSelected()) {
+					listaRepVideos.irARandom();
+				}else { listaRepVideos.irASiguiente();}
 				lanzaVideo();
 			}
 		});
@@ -127,6 +139,8 @@ public class VideoPlayer extends JFrame {
 					mediaPlayerComponent.mediaPlayer().fullScreen().set(true);
 			}
 		});
+		
+		
 		addWindowListener( new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -144,7 +158,7 @@ public class VideoPlayer extends JFrame {
 				@Override
 				public void error(MediaPlayer mediaPlayer) {
 					listaRepVideos.irASiguiente();
-					lanzaVideo();
+//					lanzaVideo();
 					lCanciones.repaint();
 				}
 			    @Override
@@ -154,6 +168,14 @@ public class VideoPlayer extends JFrame {
 							mediaPlayerComponent.mediaPlayer().status().length() ) );
 					pbVideo.repaint();
 			    }
+		});
+		
+		pbVideo.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mediaPlayerComponent.mediaPlayer().controls().setTime( 
+					mediaPlayerComponent.mediaPlayer().status().length() * e.getX() / pbVideo.getWidth() );
+			}
 		});
 	}
 
@@ -182,11 +204,23 @@ public class VideoPlayer extends JFrame {
 	
 	// Pide interactivamente una carpeta para coger vídeos
 	// (null si no se selecciona)
-	private static File pedirCarpeta() {
+	private static String pedirCarpeta() {
 		// TODO: Pedir la carpeta usando JFileChooser
 		JFileChooser fileChooser = new JFileChooser();
-		int seleccion = fileChooser.showOpenDialog(null);
 		
+		fileChooser.setCurrentDirectory(new File("H:\\git\\practica1temporal\\ReproductorJava\\test\\res"));
+	    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+	    
+	    int result = fileChooser.showOpenDialog(null);
+
+	    if (result != JFileChooser.CANCEL_OPTION) {
+
+	        File fileName = fileChooser.getSelectedFile();
+	        
+	        if(fileName != null) {
+	        	return(fileName+"");
+	        }
+	    }
 		return null;
 	}
 
@@ -200,14 +234,31 @@ public class VideoPlayer extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// Para probar carga interactiva descomentar o comentar la línea siguiente:
-		args = new String[] { "*Pentatonix*.mp4", "test/res/" };
+//		args = new String[] { "*Pentatonix*.mp4", "test/res/" };
+		if (args.length == 0) { 
+			Object fichero = JOptionPane.showInputDialog(
+					null, 
+					"Escriba el nombre de los ficheros",
+					"Entrada",
+					JOptionPane.QUESTION_MESSAGE,null,null, "*Pentatonix*.mp4");
+			
+			ficheros = fichero + "";
+			args = new String[] {pedirCarpeta(),ficheros};
+			}
+		
 		if (args.length < 2) {
 			// No hay argumentos: selección manual
-			File fPath = pedirCarpeta();
+			File fPath = new File(pedirCarpeta());
 			if (fPath==null) return;
-			path = fPath.getAbsolutePath();
-			// TODO : Petición manual de ficheros con comodines (showInputDialog)
-			// ficheros = ???
+				path = fPath.getAbsolutePath();
+				// TODO : Petición manual de ficheros con comodines (showInputDialog)
+				Object fichero = JOptionPane.showInputDialog(
+						null, 
+						"Escriba el nombre de los ficheros",
+						"Entrada",
+						JOptionPane.QUESTION_MESSAGE,null,null, "*Pentatonix*.mp4");
+				
+				ficheros = fichero + "";
 		} else {
 			System.out.println("hi");
 			ficheros = args[0];
@@ -224,7 +275,7 @@ public class VideoPlayer extends JFrame {
 			String vlcPath = System.getenv().get( "vlc" );
 			if (vlcPath==null) {  // Poner VLC a mano
 	        	System.setProperty("jna.library.path", "\"H:\\\\libs\\\\vlcj-4.7.1\"");
-			} else {  // Poner VLC desde la variable de entorno
+			} else {  // Poner VLC desde la variable de entornok/co/caprica/vlcj/player/component/EmbeddedMediaPlayerComponent
 				System.setProperty( "jna.library.path", vlcPath );
 			}
 		}

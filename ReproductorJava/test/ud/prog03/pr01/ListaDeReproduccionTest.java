@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -102,12 +103,23 @@ public class ListaDeReproduccionTest {
 		assertEquals( 0, lr.size() );
 		}
 	
-//	@Test
-//	public void remove() {
-//		lr3.removeFic(5);
-//		assertEquals( lr3.size(), 5 );
-//	}
-
+	@Test
+	public void remove() {
+		lr3.removeFic(4);
+		assertEquals( lr3.size(), 4 );
+	}
+	
+//	Chequeo random
+	@Test
+	public void numeroRandom() {
+		assertEquals(lr3.ficheroEnCurso, -1);
+		assertTrue(lr3.irARandom());
+		for(int i = 0; i < 10; i++) {
+			lr3.irARandom();
+			assertTrue(lr3.ficheroEnCurso >= 0 && lr3.ficheroEnCurso <= lr3.ficherosLista.size()-1);
+		}
+	}
+	
 	// Chequeo de tamaño
 	@Test
 	public void size() {

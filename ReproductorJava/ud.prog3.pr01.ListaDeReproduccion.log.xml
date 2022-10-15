@@ -2,27 +2,26 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2022-10-09T21:13:43.717851300Z</date>
-  <millis>1665350023717</millis>
-  <nanos>851300</nanos>
+  <date>2022-10-15T19:44:58.767202600Z</date>
+  <millis>1665863098767</millis>
+  <nanos>202600</nanos>
   <sequence>0</sequence>
   <logger>ud.prog3.pr01.ListaDeReproduccion</logger>
   <level>INFO</level>
   <class>ud.prog3.pr01.ListaDeReproduccion</class>
   <method>add</method>
-  <thread>1</thread>
-  <message>Añadiendo ficheros con filtro *Pentatonix*.mp4</message>
+  <thread>19</thread>
+  <message>Añadiendo ficheros con filtro H:\git\practica1temporal\ReproductorJava\test\res\masFicheros\conLyrics\pre201408</message>
 </record>
 <record>
-  <date>2022-10-09T21:13:43.762730800Z</date>
-  <millis>1665350023762</millis>
-  <nanos>730800</nanos>
+  <date>2022-10-15T19:44:58.790142100Z</date>
+  <millis>1665863098790</millis>
+  <nanos>142100</nanos>
   <sequence>1</sequence>
   <logger>ud.prog3.pr01.ListaDeReproduccion</logger>
   <level>INFO</level>
   <class>ud.prog3.pr01.ListaDeReproduccion</class>
   <method>add</method>
-  <thread>1</thread>
-  <message>Añadiendo ficheros con filtro .*Pentatonix.*\.mp4</message>
+  <thread>19</thread>
+  <message>Añadiendo ficheros con filtro H:\git\practica1temporal\ReproductorJava\test\res\masFicheros\conLyrics\pre201408</message>
 </record>
-</log>

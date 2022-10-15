@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.logging.*;
 import java.util.regex.Pattern;
 
@@ -19,8 +20,8 @@ import javax.swing.event.ListDataListener;
  * de los elementos en la lista, borrar elementos y a帽adir nuevos.
  */
 public class ListaDeReproduccion implements ListModel<String> {
-	ArrayList<File> ficherosLista;     // ficheros de la lista de reproducci贸n
-	int ficheroEnCurso = -1;           // Fichero seleccionado (-1 si no hay ninguno seleccionado)
+	public ArrayList<File> ficherosLista;     // ficheros de la lista de reproducci贸n
+	public int ficheroEnCurso = -1;           // Fichero seleccionado (-1 si no hay ninguno seleccionado)
 	private static Logger logger = Logger.getLogger( ListaDeReproduccion.class.getName() );
 
 	private static final boolean ANYADIR_A_FIC_LOG = false; // poner true para no sobreescribir
@@ -192,9 +193,22 @@ public class ListaDeReproduccion implements ListModel<String> {
 	public boolean irASiguiente() {
 		ficheroEnCurso++;
 		if (ficheroEnCurso>=ficherosLista.size()) {
-			ficheroEnCurso = -1;  // Si no se encuentra, no hay selecci贸n
+			ficheroEnCurso = ficheroEnCurso -1;  // Si no se encuentra, no hay selecci贸n
 			return false;  // Y devuelve error
 		}
+		return true;
+	}
+	
+	/** Selecciona un fichero aleatorio de la lista de reproducci髇.
+	* @return true si la selecci髇 es correcta, false si hay error y no se puede seleccionar
+	*/
+	public boolean irARandom() {
+		Random rand = new Random();
+		if (ficherosLista.size() <= 1) {
+			return false;
+		}
+		ficheroEnCurso = rand.nextInt(0, ficherosLista.size());
+		System.out.println(ficheroEnCurso);
 		return true;
 	}
 
