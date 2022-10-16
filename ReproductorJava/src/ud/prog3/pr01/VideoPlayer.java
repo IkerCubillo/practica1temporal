@@ -81,7 +81,7 @@ public class VideoPlayer extends JFrame {
 		bAnyadir.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				File fPath = pedirCarpeta();
+				File fPath = new File(pedirCarpeta());
 				if (fPath==null) return;
 				path = fPath.getAbsolutePath();
 				// TODO: pedir ficheros por ventana de entrada (JOptionPane)
@@ -208,7 +208,7 @@ public class VideoPlayer extends JFrame {
 		// TODO: Pedir la carpeta usando JFileChooser
 		JFileChooser fileChooser = new JFileChooser();
 		
-		fileChooser.setCurrentDirectory(new File("H:\\git\\practica1temporal\\ReproductorJava\\test\\res"));
+		fileChooser.setCurrentDirectory(new File("H:\\git\\practica1temporal\\ReproductorJava\\test"));
 	    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	    
 	    int result = fileChooser.showOpenDialog(null);
@@ -243,7 +243,7 @@ public class VideoPlayer extends JFrame {
 					JOptionPane.QUESTION_MESSAGE,null,null, "*Pentatonix*.mp4");
 			
 			ficheros = fichero + "";
-			args = new String[] {pedirCarpeta(),ficheros};
+			args = new String[] {ficheros,pedirCarpeta()};
 			}
 		
 		if (args.length < 2) {
@@ -260,9 +260,10 @@ public class VideoPlayer extends JFrame {
 				
 				ficheros = fichero + "";
 		} else {
-			System.out.println("hi");
 			ficheros = args[0];
 			path = args[1];
+
+			System.out.println(path);
 		}
 		
 		// Inicializar VLC.
