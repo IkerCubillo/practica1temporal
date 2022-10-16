@@ -153,6 +153,14 @@ public class ListaDeReproduccion implements ListModel<String> {
 	// Métodos de selección
 	//
 	
+	public boolean irA(int pos){
+		if (pos >= ficherosLista.size()) {
+			return false;  // Devuelve error
+		}
+		ficheroEnCurso = pos; 
+		return true;
+	}
+	
 	/** Seleciona el primer fichero de la lista de reproducción
 	 * @return	true si la selección es correcta, false si hay error y no se puede seleccionar
 	 */

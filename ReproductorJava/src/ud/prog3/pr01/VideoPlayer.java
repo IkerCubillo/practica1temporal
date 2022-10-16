@@ -48,11 +48,20 @@ public class VideoPlayer extends JFrame {
 		lMensaje = new JLabel( "" );
 		JPanel pBotonera = new JPanel();
 		JButton bAnyadir = new JButton( new ImageIcon( VideoPlayer.class.getResource("img/Button Add.png")) );
+		bAnyadir.setRolloverIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Add" + "-RO" + ".png")));
+		bAnyadir.setPressedIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Add" + "-CL" + ".png")));
 		JButton bAtras = new JButton( new ImageIcon( VideoPlayer.class.getResource("img/Button Rewind.png")) );
+		bAtras.setRolloverIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Rewind" + "-RO" + ".png")));
+		bAtras.setPressedIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Rewind" + "-CL" + ".png")));
 		JButton bPausaPlay = new JButton( new ImageIcon( VideoPlayer.class.getResource("img/Button Play Pause.png")) );
+		bPausaPlay.setRolloverIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Play Pause" + "-RO" + ".png")));
+		bPausaPlay.setPressedIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Play Pause" + "-CL" + ".png")));		
 		JButton bAdelante = new JButton( new ImageIcon( VideoPlayer.class.getResource("img/Button Fast Forward.png")) );
+		bAdelante.setRolloverIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Fast Forward" + "-RO" + ".png")));
+		bAdelante.setPressedIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Fast Forward" + "-CL" + ".png")));		
 		JButton bMaximizar = new JButton( new ImageIcon( VideoPlayer.class.getResource("img/Button Maximize.png")) );
-		
+		bMaximizar.setRolloverIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Maximize" + "-RO" + ".png")));
+		bMaximizar.setPressedIcon(new ImageIcon( VideoPlayer.class.getResource("img/Button Maximize" + "-CL" + ".png")));		
 		// Componente de VCLj
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
@@ -66,10 +75,15 @@ public class VideoPlayer extends JFrame {
 		
 		// Enlace de componentes y contenedores
 		pBotonera.add( bAnyadir );
+		botonConfiguracion(bAnyadir);
 		pBotonera.add( bAtras );
+		botonConfiguracion(bAtras);
 		pBotonera.add( bPausaPlay );
+		botonConfiguracion(bPausaPlay);
 		pBotonera.add( bAdelante );
+		botonConfiguracion(bAdelante);
 		pBotonera.add( bMaximizar );
+		botonConfiguracion(bMaximizar);
 		pBotonera.add( cbAleatorio );
 		pBotonera.add( lMensaje );
 		getContentPane().add( mediaPlayerComponent, BorderLayout.CENTER );
@@ -119,7 +133,6 @@ public class VideoPlayer extends JFrame {
 		bPausaPlay.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(listaRepVideos.ficherosLista);
 				if (mediaPlayerComponent.mediaPlayer().status().isPlayable()) {
 					if (mediaPlayerComponent.mediaPlayer().status().isPlaying())
 						mediaPlayerComponent.mediaPlayer().controls().pause();
@@ -139,6 +152,18 @@ public class VideoPlayer extends JFrame {
 					mediaPlayerComponent.mediaPlayer().fullScreen().set(true);
 			}
 		});
+		lCanciones.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        if (evt.getClickCount() == 2) {
+
+		            // Double-click detected
+		        	paraVideo();
+		            listaRepVideos.irA(lCanciones.getSelectedIndex());
+		            lanzaVideo();
+		        }
+		    }
+		});
+		
 		
 		
 		addWindowListener( new WindowAdapter() {
@@ -234,7 +259,7 @@ public class VideoPlayer extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// Para probar carga interactiva descomentar o comentar la lÃ­nea siguiente:
-//		args = new String[] { "*Pentatonix*.mp4", "test/res/" };
+		args = new String[] { "*Pentatonix*.mp4", "test/res/" };
 		if (args.length == 0) { 
 			Object fichero = JOptionPane.showInputDialog(
 					null, 
@@ -294,6 +319,16 @@ public class VideoPlayer extends JFrame {
 				miVentana.lanzaVideo();
 			}
 		});
+	}
+	
+	//	Configuración boton
+	public void botonConfiguracion(JButton boton) {
+		boton.setRolloverEnabled(true);
+		boton.setFocusPainted(false);
+		boton.setOpaque(false);
+		boton.setContentAreaFilled(false);
+		boton.setBorderPainted(false);
+//		boton.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 	}
 	
 }
